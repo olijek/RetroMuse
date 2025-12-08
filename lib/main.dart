@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/enc_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/form_screen.dart';
 
 void main() {
   runApp(const RetroMuseApp());
@@ -32,7 +33,7 @@ class RetroMuseApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MainScreen(),
+      home:  FormScreen(),
     );
   }
 }
