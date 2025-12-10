@@ -1,45 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  get Provider => null;
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        const CircleAvatar(
-          radius: 50,
-          backgroundColor: Colors.deepPurple,
-          child: Icon(Icons.person, size: 60, color: Colors.white),
-        ),
-        const SizedBox(height: 16),
-        const Center(
-          child: Text(
-            'Egor',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox(height: 30),
-        _buildProfileOption(Icons.shopping_cart, 'Orders'),
-        _buildProfileOption(Icons.local_shipping, 'Deliveries'),
-        _buildProfileOption(Icons.favorite, 'Favorites'),
-        _buildProfileOption(Icons.help_outline, 'FAQ'),
-        _buildProfileOption(Icons.settings, 'Settings'),
-      ],
-    );
-  }
+    final username = Provider.of<AuthProvider>(context).username;
 
-  Widget _buildProfileOption(IconData icon, String title) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
-      child: ListTile(
-        leading: Icon(icon, color: Colors.deepPurple),
-        title: Text(title, style: const TextStyle(fontSize: 16)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () {},
+    return Scaffold(
+      backgroundColor: const Color(0xFF181818),
+      appBar: AppBar(
+        title: const Text(
+          "Profile",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF181818),
+        elevation: 0,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircleAvatar(
+              radius: 60,
+              backgroundImage: AssetImage("assets/profile.jpg"),
+            ),
+            const SizedBox(height: 20),
+
+            Text(
+              username,    // name from provider
+              style: const TextStyle(
+                fontSize: 26,
+                color: Colors.white,
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[800],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text("Edit profile"),
+            ),
+          ],
+        ),
       ),
     );
   }

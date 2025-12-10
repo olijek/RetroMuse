@@ -1,40 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/enc_screen.dart';
 import 'screens/profile_screen.dart';
-import 'screens/form_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/login_screen.dart';
 
-void main() {
-  runApp(const RetroMuseApp());
+import 'providers/auth_provider.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool logged = prefs.getBool("logged") ?? false;
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MainApp(startHome: logged),
+    ),
+  );
 }
 
-class RetroMuseApp extends StatelessWidget {
-  const RetroMuseApp({super.key});
+class MainApp extends StatelessWidget {
+  final bool startHome;
+  const MainApp({super.key, required this.startHome});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Retro Music World',
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ],
+        child: MaterialApp(
+      title: "Retro Music World",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.deepPurple,
-        scaffoldBackgroundColor: Colors.grey[100],
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black87,
-          elevation: 1,
-          centerTitle: true,
-          titleTextStyle: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-            color: Colors.black,
-          ),
-        ),
-      ),
-      home:  FormScreen(),
-    );
+      theme: ThemeData.dark(),
+      home: startHome ? const MainScreen() : const LoginScreen(),
+    ));
   }
 }
 
